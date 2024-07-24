@@ -5,7 +5,7 @@ for new data.
 One interesting aspect of this dataset that inspires me is its practical purpose. By gaining a deeper understanding of how mobile phone features influence pricing, I can make more informed decisions when purchasing a phone in the future. It can help me avoid being misled by sales personnel and ensure that I am paying a fair price for the features that matter most to me.
 
 ## Dataset
-This is a dataset from Kaggle, and the link is https://www.kaggle.com/code/vikramb/mobile-price-prediction. It has two data files -- train.csv and test.csv. I have stored them in the dataset folder.
+This is a dataset from Kaggle, and the link is https://www.kaggle.com/code/vikramb/mobile-price-prediction. It has two data files -- train.csv and test.csv. I have stored them in the dataset folder. I have omit the EDA process and Feature Engineering process since it is a mlops project. I finally keep six attribute:  . 
 
 ## Model
 To address this multiple class classification problem, I utilize three kinds of different algorithms like the above dataset. But some algorithms are different:
