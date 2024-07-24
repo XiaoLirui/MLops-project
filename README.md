@@ -8,7 +8,10 @@ One interesting aspect of this dataset that inspires me is its practical purpose
 This is a dataset from Kaggle, and the link is https://www.kaggle.com/code/vikramb/mobile-price-prediction. It has two data files -- train.csv and test.csv. I have stored them in the dataset folder.
 
 ## Model
-
+To address this multiple class classification problem, I utilize three kinds of different algorithms like the above dataset. But some algorithms are different:
+Support Vector Machines (SVM): For this problem, I experiment with two different kernel functions: the modified version –SVC with the linear kernel and the radial basis function (RBF) kernel, which is very suitable to multiple class classification.
+k-Nearest Neighbors (k-NN): I used the same algorithms as in the previous dataset.
+Decision Tree Boosting (Extra credit): I use a boosting algorithm to enhance the performance of decision trees. Specifically, it creates a base decision tree classifier and uses the AdaBoost algorithm to boost it.
 
 ## Setting up the environment
 
