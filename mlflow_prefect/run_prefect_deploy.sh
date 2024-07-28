@@ -1,2 +1,2 @@
 #!/bin/bash
-prefect deployment create train_house_rent_prefect_deploy.py
+prefect deployment create mobile_prefect_deploy.py
