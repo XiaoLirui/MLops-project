@@ -1,2 +1,2 @@
 #!/bin/bash
-python train_mobile.py
+python mobile_ml.py
