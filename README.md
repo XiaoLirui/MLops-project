@@ -15,3 +15,11 @@ Decision Tree Boosting (Extra credit): I use a boosting algorithm to enhance the
 
 ## Setting up the environment
 
+prefect server start
+
+```
+prefect server start
+prefect deployment apply -n "model_training"
+prefect deployment run "model_training"
+
+```
