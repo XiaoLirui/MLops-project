@@ -14,12 +14,31 @@ k-Nearest Neighbors (k-NN): I used the same algorithms as in the previous datase
 Decision Tree Boosting (Extra credit): I use a boosting algorithm to enhance the performance of decision trees. Specifically, it creates a base decision tree classifier and uses the AdaBoost algorithm to boost it.
 
 ## Setting up the environment
+In the windows environment, run init_config.py to initialize the configuration of these variables.  
 
-prefect server start
+Firstly, I will find prefect.exe and add it into the environment path.
+```
+py -3.8 -m pip show prefect
+```
 
+Then use the following command to start the prefect server:
 ```
 prefect server start
 prefect deployment apply -n "model_training"
 prefect deployment run "model_training"
-
 ```
+
+
+mlflow ui
+
+Then cd into train_mlflow_prefect , and depending of if you run the experiment tracking and model registry server local or in the cloud:
+
+Local: execute run_tracking_server.sh and then in another terminal, execute run_train.sh
+On AWS (cloud): Connect to your EC2 instance, then execute:
+```
+mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri postgresql://DB_USER:DB_PASSWORD@DB_ENDPOINT:5432/DB_NAME --default-artifact-root s3://S3_BUCKET_NAME then check the server is up going to http://<EC2_PUBLIC_DNS>:5000
+```
+ more on this here: https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/02-experiment-tracking/mlflow_on_aws.md Then, execute:
+  ```
+  run_train.sh
+  ```
