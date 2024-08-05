@@ -178,8 +178,10 @@ def write_config(best_run_id, dv_full_path, artifact_uri):
 def read_config():
     config = configparser.ConfigParser()
     config.read('../config.config')
-    TRACKING_SERVER_HOST = config['DEFAULT']['TRACKING_SERVER_HOST']
-    AWS_PROFILE = config['DEFAULT']['AWS_PROFILE']
+    # TRACKING_SERVER_HOST = config['DEFAULT']['TRACKING_SERVER_HOST']
+    # AWS_PROFILE = config['DEFAULT']['AWS_PROFILE']
+    TRACKING_SERVER_HOST = config['DEFAULT'].get('TRACKING_SERVER_HOST', '')
+    AWS_PROFILE = config['DEFAULT'].get('AWS_PROFILE', '')
     return TRACKING_SERVER_HOST, AWS_PROFILE
 
 
@@ -263,8 +265,8 @@ def main_flow(train_file: str, test_file: str, columns_to_scale: list, target_co
     promote_best_model("Staging")
 
 # 设置参数
-train_file = '../data/train.csv'
-test_file = '../data/test.csv'
+train_file = 'data/train.csv'
+test_file = 'data/test.csv'
 columns_to_scale = ['battery_power', 'clock_speed', 'fc', 'int_memory', 'm_dep', 'mobile_wt', 'n_cores', 'pc', 'px_height', 'px_width', 'ram', 'sc_h', 'sc_w']
 target_column = 'price_range'
 test_size = 0.2

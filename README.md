@@ -23,7 +23,8 @@ py -3.8 -m pip show prefect
 
 Then use the following command to start the prefect server:
 ```
-prefect server start
+prefect orion start
+mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlruns
 prefect deployment apply -n "model_training"
 prefect deployment run "model_training"
 ```
