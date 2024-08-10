@@ -27,7 +27,9 @@ prefect orion start
 mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlruns
 ```
 
-Then run the mobile_ml.py, then we can see the result in the prefect server like this
+## Running the project
+### 1. Running it locally
+Run the mobile_ml.py, then we can see the result in the prefect server and mlflow like this
 
 ![prefect](pics/p1.png)
 
@@ -39,6 +41,8 @@ We can also configure our flow deployment using the following command:
 prefect deployment apply -n "model_training"
 prefect deployment run "model_training"
 ```
+
+### 2. Running it in the cloud
 Then cd into train_mlflow_prefect , and depending of if you run the experiment tracking and model registry server local or in the cloud:
 
 Local: execute run_tracking_server.sh and then in another terminal, execute run_train.sh
