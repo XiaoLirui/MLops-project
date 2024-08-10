@@ -60,4 +60,10 @@ mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri postgresql://DB_USER:DB_PAS
 
 
 ## Deploying Schedule
-  For Workflow orchestration, you can execute prefect orion start in a terminal and in another terminal, execute mobile_ml_prefect_delop.py, it will make a schedule to train the model every 10th of any month, at 8 am UTC+8.
+  For Workflow orchestration, you can execute prefect orion start in a terminal and in another terminal, execute mobile_ml_prefect_deploy.py, it will make a schedule to train the model every 10th of any month, at 8 am UTC+8.
+
+
+## Reuse Model after Training
+We have MLflow Tracking Server running locally, and you can visit http://127.0.0.1:5000 to view the experiments and run logs. best_run_id is displayed at the top of the run details page.
+
+Or during training, the best_run_id is usually printed in the console output. we can review the console output when running mobile_ml.py or mobile_ml_prefect_deploy.py to find similar logs.
