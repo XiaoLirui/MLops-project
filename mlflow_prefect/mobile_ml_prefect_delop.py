@@ -52,7 +52,8 @@ def split_train_validation(train_df: pd.DataFrame, target_column: str, test_size
 
 
 @task
-def preprocess(dicts, dv: DictVectorizer, fit_dv: bool = False):  
+def preprocess(data_df, dv: DictVectorizer, fit_dv: bool = False):
+    dicts = data_df.to_dict(orient='records') 
     if fit_dv:
         X = dv.fit_transform(dicts)
     else:
@@ -66,6 +67,9 @@ def load_pickle(filename):
 
 @task
 def train_and_log_model(dict_train, y_train, dict_val, y_val, dict_test, y_test, params):
+    dict_train = dict_train.to_dict(orient='records')
+    dict_val = dict_val.to_dict(orient='records')
+    dict_test = dict_test.to_dict(orient='records')
 
     SPACE = {
         'max_depth': scope.int(hp.quniform('max_depth', 1, 20, 1)),
@@ -178,27 +182,23 @@ def write_config(best_run_id, dv_full_path, artifact_uri):
 def read_config():
     config = configparser.ConfigParser()
     config.read('../config.config')
-    TRACKING_SERVER_HOST = config['DEFAULT']['TRACKING_SERVER_HOST']
-    AWS_PROFILE = config['DEFAULT']['AWS_PROFILE']
+    TRACKING_SERVER_HOST = config['DEFAULT'].get('TRACKING_SERVER_HOST', '')
+    AWS_PROFILE = config['DEFAULT'].get('AWS_PROFILE', '')
     return TRACKING_SERVER_HOST, AWS_PROFILE
 
 
 @flow(task_runner=SequentialTaskRunner())
 def main_flow(train_file: str, test_file: str, columns_to_scale: list, target_column: str, test_size: float, random_state: int, dest_path: str, num_trials_hpo=50, log_top_best_models=5):
-    # 加载数据集
     train_df, test_df = load_datasets(train_file, test_file).result()
 
-    # 规范化特征
     train_df, test_df = normalize_features(train_df, test_df, columns_to_scale).result()
 
-    # 划分训练和验证集
     X_train, X_val, y_train, y_val = split_train_validation(train_df, target_column, test_size, random_state).result()
 
-    # 保存数据
     os.makedirs(dest_path, exist_ok=True)
-    dump_pickle((X_train, y_train), os.path.join(dest_path, "train.pkl"))
-    dump_pickle((X_val, y_val), os.path.join(dest_path, "valid.pkl"))
-    dump_pickle(test_df, os.path.join(dest_path, "test.pkl"))
+    dump_pickle((X_train, y_train), os.path.join(dest_path, "train_deploy.pkl"))
+    dump_pickle((X_val, y_val), os.path.join(dest_path, "valid_deploy.pkl"))
+    dump_pickle(test_df, os.path.join(dest_path, "test1_deploy.pkl"))
 
     # ***Train with hyperparameter optimization***
     TRACKING_SERVER_HOST, AWS_PROFILE = read_config()
@@ -209,8 +209,8 @@ def main_flow(train_file: str, test_file: str, columns_to_scale: list, target_co
         mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
 
-    X_train, y_train = load_pickle(os.path.join(dest_path, "train.pkl")).result()
-    X_valid, y_valid = load_pickle(os.path.join(dest_path, "valid.pkl")).result()
+    X_train, y_train = load_pickle(os.path.join(dest_path, "train_deploy.pkl")).result()
+    X_valid, y_valid = load_pickle(os.path.join(dest_path, "valid_deploy.pkl")).result()
 
     best_result = hpo(X_train, y_train, X_valid, y_valid, num_trials=num_trials_hpo).result()
 
@@ -263,9 +263,9 @@ def main_flow(train_file: str, test_file: str, columns_to_scale: list, target_co
     promote_best_model("Staging")
 
 from prefect.deployments import DeploymentSpec
-# from prefect.orion.schemas.schedules import CronSchedule
+from prefect.orion.schemas.schedules import CronSchedule
 from prefect.flow_runners import SubprocessFlowRunner
-from prefect.server.schemas.schedules import CronSchedule
+# from prefect.server.schemas.schedules import CronSchedule
 from prefect.flow_runners import SubprocessFlowRunner
 
 
@@ -273,8 +273,8 @@ DeploymentSpec(
     flow=main_flow,
     name="model_training",
     schedule=CronSchedule(
-        cron="0 2 15 * *",
-        timezone="America/Montevideo"),
+        cron="0 0 10 * *",
+        timezone="Asia/Shanghai"),
     flow_runner=SubprocessFlowRunner(),
     tags=["ml"]
 )

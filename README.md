@@ -57,3 +57,7 @@ mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri postgresql://DB_USER:DB_PAS
   ```
 
   Please remember to fill in your own TRACKING_SERVER_HOST and AWS_PROFILE in the init_config.py 
+
+
+## Deploying Schedule
+  For Workflow orchestration, you can execute prefect orion start in a terminal and in another terminal, execute mobile_ml_prefect_delop.py, it will make a schedule to train the model every 10th of any month, at 8 am UTC+8.
