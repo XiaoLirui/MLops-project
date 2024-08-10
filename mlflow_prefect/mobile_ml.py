@@ -56,8 +56,19 @@ def load_pickle(filename):
     with open(filename, "rb") as f_in:
         return pickle.load(f_in)
     
+# @task
+# def preprocess(dicts, dv: DictVectorizer, fit_dv: bool = False):  
+#     if fit_dv:
+#         X = dv.fit_transform(dicts)
+#     else:
+#         X = dv.transform(dicts)
+#     return X, dv
+    
 @task
-def preprocess(dicts, dv: DictVectorizer, fit_dv: bool = False):  
+def preprocess(data_df, dv: DictVectorizer, fit_dv: bool = False):
+    dicts = data_df.to_dict(orient='records')  # 将 DataFrame 转换为字典列表
+    print(f"Type of dicts: {type(dicts)}")  # 输出数据类型
+    print(f"First item in dicts: {dicts[0]}")  # 输出第一个字典
     if fit_dv:
         X = dv.fit_transform(dicts)
     else:
@@ -66,6 +77,13 @@ def preprocess(dicts, dv: DictVectorizer, fit_dv: bool = False):
 
 @task
 def train_and_log_model(dict_train, y_train, dict_val, y_val, dict_test, y_test, params):
+    dict_train = dict_train.to_dict(orient='records')
+    dict_val = dict_val.to_dict(orient='records')
+    dict_test = dict_test.to_dict(orient='records')
+
+    print(f"Type of dict_train: {type(dict_train)}")
+    print(f"Type of dict_val: {type(dict_val)}")
+    print(f"Type of dict_test: {type(dict_test)}")
 
     SPACE = {
         'max_depth': scope.int(hp.quniform('max_depth', 1, 20, 1)),

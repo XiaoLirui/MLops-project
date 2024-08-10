@@ -16,22 +16,25 @@ Decision Tree Boosting (Extra credit): I use a boosting algorithm to enhance the
 ## Setting up the environment
 In the windows environment, run init_config.py to initialize the configuration of these variables.  
 
-Firstly, I will find prefect.exe and add it into the environment path.
+Firstly, I will find prefect.exe and add it into the environment path. Use the following cmd to check if it exists.
 ```
 py -3.8 -m pip show prefect
 ```
 
-Then use the following command to start the prefect server:
+Then use the following command to start the prefect server and mlflow server:
 ```
 prefect orion start
 mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlruns
+```
+
+Then run the mobile_ml.py, then we can see the result in the prefect server like this
+
+
+We can also configure our flow deployment using the following command:
+```
 prefect deployment apply -n "model_training"
 prefect deployment run "model_training"
 ```
-
-
-mlflow ui
-
 Then cd into train_mlflow_prefect , and depending of if you run the experiment tracking and model registry server local or in the cloud:
 
 Local: execute run_tracking_server.sh and then in another terminal, execute run_train.sh
