@@ -28,7 +28,9 @@ mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri sqlite:///mlflow.db --defau
 ```
 
 Then run the mobile_ml.py, then we can see the result in the prefect server like this
+
 ![prefect](pics/p1.png)
+
 ![mlflow](pics/p2.png)
 
 
