@@ -67,3 +67,19 @@ mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri postgresql://DB_USER:DB_PAS
 We have MLflow Tracking Server running locally, and you can visit http://127.0.0.1:5000 to view the experiments and run logs. best_run_id is displayed at the top of the run details page.
 
 Or during training, the best_run_id is usually printed in the console output. we can review the console output when running mobile_ml.py or mobile_ml_prefect_deploy.py to find similar logs.
+
+After finding, execute the predict.py, and it will provide the result for test_sample.
+
+If you have downloaded the artifacts in your local environment, you can predict as this way:
+ 
+ ```
+local_model_path = 'mlflow_artifacts/model/model.pkl'  # your local path
+
+with open(local_model_path, 'rb') as f_in:
+    model = pickle.load(f_in)
+
+def predict(features):
+    X = model.named_steps['dictvectorizer'].transform(features)
+    preds = model.named_steps['randomforestregressor'].predict(X)
+    return float(preds[0])
+  ```

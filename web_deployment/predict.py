@@ -3,10 +3,15 @@ from flask import Flask, request, jsonify
 import configparser
 import mlflow
 import os
+from sklearn.feature_extraction import DictVectorizer
+
 
 def read_config():
     config = configparser.ConfigParser()
-    config.read('./config.config')
+    config_path = './config.config'
+    print(f"Trying to read config file from: {os.path.abspath(config_path)}")
+    config.read('./web_deployment/config.config')
+
     best_run_id = config['DEFAULT']['best_run_id']
     dv_full_path = config['DEFAULT']['dv_full_path']
     return best_run_id, dv_full_path
