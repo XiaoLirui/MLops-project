@@ -44,6 +44,7 @@ prefect deployment run "model_training"
 ```
 
 ### 2. Running it in the cloud
+
 cd into train_mlflow_prefect, connect to the EC2 instance in AWS cloud, then execute:
 
 ```
@@ -51,7 +52,18 @@ mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri postgresql://DB_USER:DB_PAS
 ```
  more details can be seen here: https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/02-experiment-tracking/mlflow_on_aws.md 
  
- Then, execute:
+ Then, in the EC2 console, select your instance and click the Connect button. 
+ ![mlflow](pics/p3.png)
+ 
+ 
+ Select the SSH tab and you will see connection information similar to the following: instance public IP address or public DNS name. The path to the key pair file (.pem file), which you need to use for authentication. More details can be seen here: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-ssh.html.
+
+ ```
+ ssh -i /path/to/your-key.pem ec2-user@instance-public-ip
+```
+
+
+ execute:
   ```
   mobile_ml.py
   ```
@@ -64,9 +76,7 @@ mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri postgresql://DB_USER:DB_PAS
 
 
 ## Reuse Model after Training
-We have MLflow Tracking Server running locally, and you can visit http://127.0.0.1:5000 to view the experiments and run logs. best_run_id is displayed at the top of the run details page.
-
-Or during training, the best_run_id is usually printed in the console output. we can review the console output when running mobile_ml.py or mobile_ml_prefect_deploy.py to find similar logs.
+We have MLflow Tracking Server running locally, and you can visit http://127.0.0.1:5000 to view the experiments and run logs. best_run_id is displayed at the top of the run details page.Or during training, the best_run_id is usually printed in the console output. we can review the console output when running mobile_ml.py or mobile_ml_prefect_deploy.py to find similar logs.
 
 After finding, execute the predict.py, and it will provide the result for test_sample.
 
