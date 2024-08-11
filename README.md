@@ -48,7 +48,12 @@ prefect deployment run "model_training"
 cd into train_mlflow_prefect, connect to the EC2 instance in AWS cloud, then execute:
 
 ```
-mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri postgresql://DB_USER:DB_PASSWORD@DB_ENDPOINT:5432/DB_NAME --default-artifact-root s3://S3_BUCKET_NAME``` then check the server is up going to ```http://<EC2_PUBLIC_DNS>:5000```
+mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri postgresql://DB_USER:DB_PASSWORD@DB_ENDPOINT:5432/DB_NAME --default-artifact-root s3://S3_BUCKET_NAME
+```   
+then check the server is up going to 
+```
+http://<EC2_PUBLIC_DNS>:5000
+```
 
  more details can be seen here: https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/02-experiment-tracking/mlflow_on_aws.md 
  
