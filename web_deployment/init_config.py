@@ -3,7 +3,7 @@ import configparser
 import shutil
 
 # If using aws for experiment tracking and model registry fill in with the public DNS of the EC2 instance, else leave it ""
-TRACKING_SERVER_HOST = "" # fill in with the public DNS of the EC2 instance or leave it ""
+TRACKING_SERVER_HOST = "ec2-18-212-173-4.compute-1.amazonaws.com" # fill in with the public DNS of the EC2 instance or leave it ""
 
 # If using aws for experiment tracking and model registry fill with your aws profile, else leave it ""
 AWS_PROFILE = ""

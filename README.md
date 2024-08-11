@@ -43,29 +43,30 @@ prefect deployment apply -n "model_training"
 prefect deployment run "model_training"
 ```
 
- execute:
-  ```
-  mobile_ml.py
-  ```
+ execute:```mobile_ml.py```
 
   Please remember to fill in your own TRACKING_SERVER_HOST and AWS_PROFILE in the init_config.py 
 
 ### 2. Running it in the cloud
 
-cd into train_mlflow_prefect, connect to the EC2 instance in AWS cloud, then execute:
+Connect to the EC2 instance in AWS cloud. Then, in the EC2 console, select your instance and click the Connect button. 
+ ![EC2 connect](pics/p3.png)
 
+After that, execute:
 ```
 mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri postgresql://DB_USER:DB_PASSWORD@DB_ENDPOINT:5432/DB_NAME --default-artifact-root s3://S3_BUCKET_NAME
 ```   
-then check the server is up going to 
-```
-http://<EC2_PUBLIC_DNS>:5000
-```
+
+ ![EC2 connect](pics/p4.png)
+ 
+ ![EC2 connect](pics/p5.png)
+
+then check the server is up going to ```http://<EC2_PUBLIC_DNS>:5000```
+
+ ![EC2 connect](pics/p6.png)
 
  more details can be seen here: https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/02-experiment-tracking/mlflow_on_aws.md 
  
- Then, in the EC2 console, select your instance and click the Connect button. 
- ![mlflow](pics/p3.png)
  
 Next, for Model deployment, cd into web-services in the local environment.
 
