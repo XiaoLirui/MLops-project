@@ -43,6 +43,13 @@ prefect deployment apply -n "model_training"
 prefect deployment run "model_training"
 ```
 
+ execute:
+  ```
+  mobile_ml.py
+  ```
+
+  Please remember to fill in your own TRACKING_SERVER_HOST and AWS_PROFILE in the init_config.py 
+
 ### 2. Running it in the cloud
 
 cd into train_mlflow_prefect, connect to the EC2 instance in AWS cloud, then execute:
@@ -60,20 +67,12 @@ http://<EC2_PUBLIC_DNS>:5000
  Then, in the EC2 console, select your instance and click the Connect button. 
  ![mlflow](pics/p3.png)
  
- 
- Select the SSH tab and you will see connection information similar to the following: instance public IP address or public DNS name. The path to the key pair file (.pem file), which you need to use for authentication. More details can be seen here: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-ssh.html.
+Next, for Model deployment, cd into web-services in the local environment.
 
- ```
- ssh -i /path/to/your-key.pem ec2-user@instance-public-ip
-```
+There, we can execute in a terminal python predict.py and in another one python test_sample.py. predict.py will pull the best model from aws s3 in case the variable TRACKING_SERVER_HOST set before, or from the local mlrun artifact location otherwise.
 
+Also, there is a Dockerfile to containerize and deploy to any cloud where Docker is accepted. For that, execute in AWS EC2 terminal ```docker build -t mobile-price-prediction-service:v1``` to build the Docker image and then ```docker run -it --rm -p 9696:9696  mobile-price-prediction-service:v1``` , and in another terminal execute ```python test_web_service.py``` to verify that it is working. Note that in this case, the model is loaded from model.pkl since from inside the docker image it is difficult and also not suggested to access aws credentials, which are needed to pull the artifacts from S3. This is solved by passing the model binary (which includes the dictionary vectorizer and the model itself).
 
- execute:
-  ```
-  mobile_ml.py
-  ```
-
-  Please remember to fill in your own TRACKING_SERVER_HOST and AWS_PROFILE in the init_config.py 
 
 
 ## Deploying Schedule
