@@ -9,8 +9,8 @@ COPY [ "Pipfile", "Pipfile.lock", "./" ]
 
 RUN pipenv install --system --deploy
 
-COPY [ "predict_for_docker.py", "model.pkl", "config.config", "./" ]
+COPY [ "predict.py", "model.pkl", "config.config", "./" ]
 
 EXPOSE 9696
 
-ENTRYPOINT [ "gunicorn", "--bind=0.0.0.0:9696", "predict_for_docker:app" ]
+ENTRYPOINT [ "gunicorn", "--bind=0.0.0.0:9696", "predict:app" ]
