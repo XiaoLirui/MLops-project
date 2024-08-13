@@ -72,9 +72,9 @@ Next, for Model deployment, cd into web-services in the local environment.
 
 There, we can execute in a terminal python predict.py and in another one python test_sample.py. predict.py will pull the best model from aws s3 in case the variable TRACKING_SERVER_HOST set before, or from the local mlrun artifact location otherwise.
 
-Also, there is a Dockerfile to containerize and deploy to any cloud where Docker is accepted. For that, execute in AWS EC2 terminal ```docker build -t mobile-price-prediction-service:v1``` to build the Docker image and then ```docker run -it --rm -p 9696:9696  mobile-price-prediction-service:v1``` , and in another terminal execute ```python test_web_service.py``` to verify that it is working. Note that in this case, the model is loaded from model.pkl since from inside the docker image it is difficult and also not suggested to access aws credentials, which are needed to pull the artifacts from S3. This is solved by passing the model binary (which includes the dictionary vectorizer and the model itself).
+Also, there is a Dockerfile to containerize and deploy to any cloud where Docker is accepted. For that, I will firstly git clone my project to ec2 instance, then execute in AWS EC2 terminal ```docker build -t mobile-price-prediction-service:v1``` to build the Docker image and then ```docker run -it --rm -p 9696:9696  mobile-price-prediction-service:v1``` , and in another terminal execute ```python test_web_service.py``` to verify that it is working. Note that in this case, the model is loaded from model.pkl since from inside the docker image it is difficult and also not suggested to access aws credentials, which are needed to pull the artifacts from S3. This is solved by passing the model binary (which includes the dictionary vectorizer and the model itself).
 
-
+ ![EC2 connect](pics/p7.png)
 
 ## Deploying Schedule
   For Workflow orchestration, you can execute prefect orion start in a terminal and in another terminal, execute mobile_ml_prefect_deploy.py, it will make a schedule to train the model every 10th of any month, at 8 am UTC+8.

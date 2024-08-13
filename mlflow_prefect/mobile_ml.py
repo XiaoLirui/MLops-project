@@ -194,7 +194,7 @@ def write_config(best_run_id, dv_full_path, artifact_uri):
 
 def read_config():
     config = configparser.ConfigParser()
-    config.read('../config.config')
+    config.read(config_path)
     # TRACKING_SERVER_HOST = config['DEFAULT']['TRACKING_SERVER_HOST']
     # AWS_PROFILE = config['DEFAULT']['AWS_PROFILE']
     TRACKING_SERVER_HOST = config['DEFAULT'].get('TRACKING_SERVER_HOST', '')
@@ -222,6 +222,7 @@ def main_flow(train_file: str, test_file: str, columns_to_scale: list, target_co
 
     # ***Train with hyperparameter optimization***
     TRACKING_SERVER_HOST, AWS_PROFILE = read_config()
+    print(TRACKING_SERVER_HOST)
     if TRACKING_SERVER_HOST != '':    
         mlflow.set_tracking_uri(f"http://{TRACKING_SERVER_HOST}:5000")
         os.environ["AWS_PROFILE"] = AWS_PROFILE
@@ -289,6 +290,11 @@ target_column = 'price_range'
 test_size = 0.2
 random_state = 42
 dest_path = './output'
+
+base_dir = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.join(base_dir, '..', 'config.config')
+
+print(f"Reading config from: {config_path}")
 
 # 运行主流程
 main_flow(train_file, test_file, columns_to_scale, target_column, test_size, random_state, dest_path)
